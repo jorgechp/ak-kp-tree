@@ -48,13 +48,18 @@ print("Validation 1")
 
 validator = Validator()
 validator.load_validator(AK_FILE, KP_FILE)
-print(validator.compute_training(predictor))
+validator.split_training_test(training_rate=0.6)
+results = validator.validate(ProbabilityPredictor, energy=0.5)
+print(results)
 
 print("Validation 2")
 
 validator = Validator()
 validator.load_validator(AK_FILE, KP_FILE)
-print(validator.compute_training(predictor2))
+validator.split_training_test(training_rate=0.6)
+results = validator.validate(MeanProbabilityPredictor, energy=0.5)
+print(results)
+
 
 
 

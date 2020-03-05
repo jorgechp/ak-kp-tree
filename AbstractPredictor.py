@@ -2,17 +2,31 @@ from abc import ABC, abstractmethod
 
 class AbstractPredictor(ABC):
     def _load_from_file(self, file_path):
-        keywords_set = set()
         f_keywords = open(file_path, "r")
         keywords_lines = [line.rstrip('\r\n').split(',') for line in f_keywords.readlines()]
         f_keywords.close()
-        for ak_doc in keywords_lines:
-            keywords_set.update(ak_doc)
-        return keywords_lines, keywords_set
+        return keywords_lines
+
+    def _generate_set_from_lines(self, lines):
+        keyword_set = set()
+
+        for keyword in lines:
+            keyword_set.update(keyword)
+        return keyword_set
 
     def generate_from_file(self, ak_file_path, kp_file_path):
-        ak_lines, ak_set = self._load_from_file(ak_file_path)
-        kp_lines, kp_set = self._load_from_file(kp_file_path)
+        ak_lines = self._load_from_file(ak_file_path)
+        kp_lines = self._load_from_file(kp_file_path)
+
+        ak_set = self._generate_set_from_lines(ak_lines)
+        kp_set = self._generate_set_from_lines(kp_lines)
+
+        self._compute_occurrence_matrix(ak_lines, ak_set, kp_lines, kp_set)
+        self._compute_frequency_matrix()
+
+    def generate_from_lines(self, ak_lines, kp_lines):
+        ak_set = self._generate_set_from_lines(ak_lines)
+        kp_set = self._generate_set_from_lines(kp_lines)
 
         self._compute_occurrence_matrix(ak_lines, ak_set, kp_lines, kp_set)
         self._compute_frequency_matrix()
