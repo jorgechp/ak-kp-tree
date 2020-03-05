@@ -61,7 +61,7 @@ class Validator(object):
         predictor_instance = predictor()
         predictor_instance.generate_from_lines(self._ak_training_lines, self._kp_training_lines)
 
-        training_results = self.test_battery(predictor_instance, self._ak_training_lines, self._kp_training_lines)
-        test_results = self.test_battery(predictor_instance, self._ak_test_lines, self._kp_test_lines)
+        training_results = self.test_battery(predictor_instance, self._ak_training_lines, self._kp_training_lines, energy = energy)
+        test_results = self.test_battery(predictor_instance, self._ak_test_lines, self._kp_test_lines , energy = energy)
 
         return training_results, test_results

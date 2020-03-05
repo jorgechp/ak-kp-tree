@@ -17,8 +17,12 @@ class ProbabilityPredictor(AbstractPredictor):
         self._frequency_matrix = self._occurrence_matrix.div(self._occurrence_matrix.sum(axis=1), axis=0)
 
     def compute_kp_scores(self, ak_set):
-        filtered_frequency_matrix = self._frequency_matrix[ak_set]
-        return filtered_frequency_matrix.sum(axis=1)
+        existing_keywords = self._frequency_matrix.columns.intersection(ak_set)
+        if len(existing_keywords) > 0:
+            filtered_frequency_matrix = self._frequency_matrix[existing_keywords]
+            return filtered_frequency_matrix.sum(axis=1)
+        else:
+            return False
 
 
 

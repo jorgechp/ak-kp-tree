@@ -32,12 +32,16 @@ class AbstractPredictor(ABC):
         self._compute_frequency_matrix()
 
     def compute_kp(self, ak_set, energy = 0.7):
-        kp_scores = self.compute_kp_scores(ak_set).sort_values(ascending=False).to_frame(name="score")
-        total_values = kp_scores.sum()
-        energy_threshold = float(total_values * energy)
-        kp_scores['cumulative_score'] = kp_scores.cumsum()
-        kp_scores_series = kp_scores[kp_scores['cumulative_score'] >= energy_threshold]['score']
-        return kp_scores_series.to_dict()
+        kp_scores = self.compute_kp_scores(ak_set)
+        if kp_scores is not False:
+            kp_scores = kp_scores.sort_values(ascending=False).to_frame(name="score")
+            total_values = kp_scores.sum()
+            energy_threshold = float(total_values * energy)
+            kp_scores['cumulative_score'] = kp_scores.cumsum()
+            kp_scores_series = kp_scores[kp_scores['cumulative_score'] <= energy_threshold]['score']
+            return kp_scores_series.to_dict()
+        else:
+            return dict()
 
     def compute_kp_set(self, ak_set, energy = 0.7):
         return set(self.compute_kp(ak_set, energy).keys())
