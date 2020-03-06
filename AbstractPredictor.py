@@ -35,10 +35,16 @@ class AbstractPredictor(ABC):
         kp_scores = self.compute_kp_scores(ak_set)
         if kp_scores is not False:
             kp_scores = kp_scores.sort_values(ascending=False).to_frame(name="score")
+            kp_scores = kp_scores[kp_scores['score'] > 0]
             total_values = kp_scores.sum()
             energy_threshold = float(total_values * energy)
             kp_scores['cumulative_score'] = kp_scores.cumsum()
-            kp_scores_series = kp_scores[kp_scores['cumulative_score'] <= energy_threshold]['score']
+            limit_threshold_series = kp_scores[kp_scores['cumulative_score'] >= energy_threshold].head(1)['cumulative_score']
+            if limit_threshold_series.empty:
+                limit_threshold = energy_threshold
+            else:
+                limit_threshold = float(limit_threshold_series)
+            kp_scores_series = kp_scores[kp_scores['cumulative_score'] <= limit_threshold]['score']
             return kp_scores_series.to_dict()
         else:
             return dict()

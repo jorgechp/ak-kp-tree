@@ -46,7 +46,8 @@ class Validator(object):
         for ak_input, kp_output in zip(ak_lines, kp_lines):
             kp_output_to_validate = predictor.compute_kp_set(ak_set = set(ak_input), energy=energy)
             kp_output_set = set(kp_output)
-
+            if len(kp_output_to_validate) == 0:
+                print("hola")
             true_positives = len(kp_output_to_validate.intersection(kp_output_set))
             false_negatives = len(kp_output_set.difference(kp_output_to_validate))
             recall = float(true_positives) / (true_positives + false_negatives)
