@@ -39,15 +39,13 @@ class Validator(object):
         self._ak_test_lines = ak_shuffled_lines[training_len:]
         self._kp_test_lines = kp_shuffled_lines[training_len:]
 
-    def test_battery(self, predictor: AbstractPredictor, ak_lines, kp_lines, energy=0.5):
+    def test_battery(self, predictor, ak_lines, kp_lines, energy=0.5):
         recall_scores = []
         false_negative_rate_scores = []
 
         for ak_input, kp_output in zip(ak_lines, kp_lines):
             kp_output_to_validate = predictor.compute_kp_set(ak_set = set(ak_input), energy=energy)
             kp_output_set = set(kp_output)
-            if len(kp_output_to_validate) == 0:
-                print("hola")
             true_positives = len(kp_output_to_validate.intersection(kp_output_set))
             false_negatives = len(kp_output_set.difference(kp_output_to_validate))
             recall = float(true_positives) / (true_positives + false_negatives)
@@ -58,10 +56,7 @@ class Validator(object):
 
         return statistics.mean(recall_scores), statistics.mean(false_negative_rate_scores)
 
-    def validate(self, predictor, energy = 0.5):
-        predictor_instance = predictor()
-        predictor_instance.generate_from_lines(self._ak_training_lines, self._kp_training_lines)
-
+    def validate(self, predictor_instance, energy = 0.5):
         training_results = self.test_battery(predictor_instance, self._ak_training_lines, self._kp_training_lines, energy = energy)
         test_results = self.test_battery(predictor_instance, self._ak_test_lines, self._kp_test_lines , energy = energy)
 
