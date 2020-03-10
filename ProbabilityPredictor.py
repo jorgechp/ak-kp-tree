@@ -1,9 +1,9 @@
 import pandas as pd
 
-from AbstractPredictor import AbstractPredictor
+from AbstractStatisticPredictor import AbstractStatisticPredictor
 
 
-class ProbabilityPredictor(AbstractPredictor):
+class ProbabilityPredictor(AbstractStatisticPredictor):
 
     def _compute_occurrence_matrix(self, ak_lines, ak_set, kp_lines, kp_set):
         self._occurrence_matrix = pd.DataFrame(0, index=kp_set, columns=ak_set, dtype=float)

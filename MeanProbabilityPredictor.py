@@ -1,9 +1,9 @@
 import pandas as pd
 
-from AbstractPredictor import AbstractPredictor
+from AbstractStatisticPredictor import AbstractStatisticPredictor
 
 
-class MeanProbabilityPredictor(AbstractPredictor):
+class MeanProbabilityPredictor(AbstractStatisticPredictor):
 
 
     def _compute_occurrence_matrix(self, ak_lines, ak_set, kp_lines, kp_set):
