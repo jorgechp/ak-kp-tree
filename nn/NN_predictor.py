@@ -6,9 +6,6 @@ from AbstractPredictor import AbstractPredictor
 from nn.KP_nn import KP_NN
 
 
-
-
-
 class NNPredictor(AbstractPredictor):
 
 
@@ -38,11 +35,14 @@ class NNPredictor(AbstractPredictor):
         self._model.load_state_dict(torch.load(model_path))
 
 
-    def compute_kp_scores(self, ak_set):
+    def compute_kp_scores(self, ak_set, energy = 0.7):
         self._model.eval()
 
         words_instance = list(ak_set)
-        return self._predict_words(self._data_manager, self._model, words_instance)
+        return self._predict_words(self._data_manager, self._model, words_instance, threshold = energy)
+
+    def compute_kp_set(self, ak_set, energy = 0.7):
+        return self.compute_kp_scores(ak_set)
 
 
 
