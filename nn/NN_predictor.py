@@ -12,7 +12,7 @@ class NNPredictor(AbstractPredictor):
     def _predict_words(self, data_manager, model, words, k=50, threshold=0.9):
         model.eval()
         instance = data_manager.generate_instance(words)
-        predicted_kp = []
+        predicted_kp = set()
         with torch.no_grad():
             prediction = torch.topk(model(instance.view(1, self._num_of_inputs)), k=k)
             word_indices = prediction[1].tolist()[0]
@@ -20,7 +20,7 @@ class NNPredictor(AbstractPredictor):
             for index, probability in zip(word_indices, word_probabilities):
                 if probability > threshold:
                     predicted_kw = data_manager.getKp(index)
-                    predicted_kp.append(predicted_kw)
+                    predicted_kp.add(predicted_kw)
         return predicted_kp
 
 
