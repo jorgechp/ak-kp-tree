@@ -17,7 +17,7 @@ NN_DATA_MANAGER_PATH = "saved_models/data_manager_5325_ak_kp.pkl"
 
 TRAINING_RATE = 0.9
 ENERGY_RATE = 0.99
-THRESHOLD_SCORE_CLUSTER= 0.3
+THRESHOLD_SCORE_CLUSTER= 0.9
 
 
 
@@ -32,15 +32,15 @@ else:
 
 
 
-print("Validation 1: Probabilistic")
-validator = Validator()
-validator.load_validator(AK_FILE, KP_FILE)
-validator.split_training_test(training_rate=TRAINING_RATE)
-results = validator.validate(predictor, energy=ENERGY_RATE)
-print(results)
-
-del predictor
-del validator
+# print("Validation 1: Probabilistic")
+# validator = Validator()
+# validator.load_validator(AK_FILE, KP_FILE)
+# validator.split_training_test(training_rate=TRAINING_RATE)
+# results = validator.validate(predictor, energy=ENERGY_RATE)
+# print(results)
+#
+# del predictor
+# del validator
 
 print("Validation 2: Cluster")
 predictor_cluster = ClusterPredictor()

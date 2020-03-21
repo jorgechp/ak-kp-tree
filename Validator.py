@@ -1,3 +1,4 @@
+import re
 import statistics
 import random
 
@@ -7,9 +8,12 @@ from AbstractPredictor import AbstractPredictor
 
 class Validator(object):
 
+    def _clean(self, text):
+        return re.sub('[^A-Za-z0-9,]+', '', text)
+
     def _load_from_file(self, file_path):
         f_keywords = open(file_path, "r")
-        keywords_lines = [line.rstrip('\r\n').split(',') for line in f_keywords.readlines()]
+        keywords_lines = [self._clean(line).rstrip('\r\n').split(',') for line in f_keywords.readlines()]
         f_keywords.close()
 
         return keywords_lines
