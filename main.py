@@ -17,7 +17,7 @@ NN_DATA_MANAGER_PATH = "saved_models/data_manager_5325_ak_kp.pkl"
 
 TRAINING_RATE = 0.9
 ENERGY_RATE = 0.99
-ENERGY_CLUSTER= 0.3
+THRESHOLD_SCORE_CLUSTER= 0.3
 
 
 
@@ -49,7 +49,7 @@ predictor_cluster.generate_from_file(AK_FILE, KP_FILE)
 validator_cluster = Validator()
 validator_cluster.load_validator(AK_FILE, KP_FILE)
 validator_cluster.split_training_test(training_rate=TRAINING_RATE)
-results = validator_cluster.validate(predictor_cluster, energy=ENERGY_CLUSTER)
+results = validator_cluster.validate(predictor_cluster, energy=THRESHOLD_SCORE_CLUSTER)
 print(results)
 
 del predictor_cluster
