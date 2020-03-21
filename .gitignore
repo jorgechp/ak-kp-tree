@@ -131,3 +131,7 @@ dmypy.json
 
 saved_models/
 /saved_models/
+/saved_models/
+/saved_models/data_manager_5325_ak_ak.pkl
+/saved_models/data_model_5325_ak_ak.pt
+/saved_models/predictor_probability_5325_training09_energy08_akak.pkl
