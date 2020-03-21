@@ -8,6 +8,8 @@ from nn.KP_nn import KP_NN
 
 class NNPredictor(AbstractPredictor):
 
+    def compute_existing_keywords(self, ak_set):
+        pass
 
     def _predict_words(self, data_manager, model, words, k=50, threshold=0.9):
         model.eval()

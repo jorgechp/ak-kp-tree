@@ -17,6 +17,8 @@ NN_DATA_MANAGER_PATH = "saved_models/data_manager_5325_ak_kp.pkl"
 
 TRAINING_RATE = 0.9
 ENERGY_RATE = 0.99
+ENERGY_CLUSTER= 0.3
+
 
 
 if os.path.isfile(PREDICTOR_MODEL_PATH):
@@ -30,32 +32,42 @@ else:
 
 
 
-# print("Validation 1")
-# validator = Validator()
-# validator.load_validator(AK_FILE, KP_FILE)
-# validator.split_training_test(training_rate=TRAINING_RATE)
-# results = validator.validate(predictor, energy=ENERGY_RATE)
-# print(results)
-
-print("Validation 2")
-predictor = ClusterPredictor()
-predictor.generate_from_file(AK_FILE, KP_FILE)
-results = predictor.compute_kp_scores({"authorsranking","citationcount","citationintensity","mathematicssubjectclassification"})
+print("Validation 1: Probabilistic")
+validator = Validator()
+validator.load_validator(AK_FILE, KP_FILE)
+validator.split_training_test(training_rate=TRAINING_RATE)
+results = validator.validate(predictor, energy=ENERGY_RATE)
 print(results)
 
+del predictor
+del validator
 
-print("Neural network")
+print("Validation 2: Cluster")
+predictor_cluster = ClusterPredictor()
+predictor_cluster.generate_from_file(AK_FILE, KP_FILE)
+
+validator_cluster = Validator()
+validator_cluster.load_validator(AK_FILE, KP_FILE)
+validator_cluster.split_training_test(training_rate=TRAINING_RATE)
+results = validator_cluster.validate(predictor_cluster, energy=ENERGY_CLUSTER)
+print(results)
+
+del predictor_cluster
+del validator_cluster
+
+print("Validation 3: Neural network")
 nn_predictor = NNPredictor()
 nn_predictor.prepare(NN_DATA_MODEL_PATH, NN_DATA_MANAGER_PATH)
 
 
-validator = Validator()
-validator.load_validator(AK_FILE, KP_FILE)
-validator.split_training_test(training_rate=TRAINING_RATE)
-results = validator.validate(nn_predictor, energy=ENERGY_RATE)
+validator_nn = Validator()
+validator_nn.load_validator(AK_FILE, KP_FILE)
+validator_nn.split_training_test(training_rate=TRAINING_RATE)
+results = validator_nn.validate(nn_predictor, energy=ENERGY_RATE)
 print(results)
 
-
+del nn_predictor
+del validator_nn
 
 
 # print("Validation 2")

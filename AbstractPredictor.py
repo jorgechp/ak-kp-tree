@@ -1,9 +1,12 @@
+import re
 from abc import ABC, abstractmethod
 
 
 
 class AbstractPredictor(ABC):
 
+    def _clean(self, text):
+        return re.sub('[^A-Za-z0-9,]+', '', text)
 
     # def compute_non_existing_ak(self, ak_set):
     #     #K = num_of_k
@@ -30,8 +33,12 @@ class AbstractPredictor(ABC):
     #
     #     pass
 
+    @abstractmethod
+    def compute_existing_keywords(self, ak_set):
+        pass
+
     def compute_kp(self, ak_set, energy = 0.7):
-        existing_keywords = self._frequency_matrix.columns.intersection(ak_set)
+        existing_keywords = self.compute_existing_keywords(ak_set)
         # non_existing_keywords = self._frequency_matrix.columns.difference(ak_set)
 
         kp_scores = self.compute_kp_scores(existing_keywords)

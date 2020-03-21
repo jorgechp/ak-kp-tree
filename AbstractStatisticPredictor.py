@@ -6,7 +6,7 @@ from AbstractPredictor import AbstractPredictor
 class AbstractStatisticPredictor(AbstractPredictor):
     def _load_from_file(self, file_path):
         f_keywords = open(file_path, "r")
-        keywords_lines = [line.rstrip('\r\n').split(',') for line in f_keywords.readlines()]
+        keywords_lines = [self._clean(line).rstrip('\r\n').split(',') for line in f_keywords.readlines()]
         f_keywords.close()
         return keywords_lines
 
@@ -16,6 +16,9 @@ class AbstractStatisticPredictor(AbstractPredictor):
         for keyword in lines:
             keyword_set.update(keyword)
         return keyword_set
+
+    def compute_existing_keywords(self, ak_set):
+        return self._frequency_matrix.columns.intersection(ak_set)
 
     def generate_from_file(self, ak_file_path, kp_file_path):
         ak_lines = self._load_from_file(ak_file_path)
